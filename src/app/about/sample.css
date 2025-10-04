@@ -1,0 +1,58 @@
+.full-screen {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden !important;
+  background: linear-gradient(to top,white  0%, #dce2f2 100%);
+}
+
+/* .card {
+  border-radius: 12px;
+  border: 2px solid #ff0000;
+} */
+/* .cards {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+}
+
+.cards .card {
+  width: 300px;
+  height: 200px;
+  border-radius: 20px;
+  background: rgba(4, 108, 199, 0.251);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(4, 108, 199, 0.251);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateX(300px);
+} */
+
+.cards {
+  position: absolute;
+  top: 50%;
+  left: 64%;
+  transform: translate(-50%, -50%);
+  width: 300px; /* same width as card */
+  height: 360px; /* same height as card */
+}
+
+.cards .card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 360px;
+  border-radius: 20px;
+  background: rgba(4, 108, 199, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(4, 108, 199, 0.2);
+  /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); */
+  opacity: 0;
+}

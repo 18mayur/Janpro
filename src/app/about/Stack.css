@@ -1,0 +1,33 @@
+.section {
+  padding: 6rem 0;
+}
+
+.cards-section {
+  position: relative;
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: 200px auto;
+}
+
+.cards {
+  display: grid;
+  margin-top: 3.5rem;
+}
+.cards > * {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.card {
+  width: 300px;
+  height: 250px;
+  background-color: red;
+  border-radius: 8px;
+  border: 2px solid red;
+}
+
+.to-stay-card {
+  background-color: red;
+  border-radius: 8px;
+  width: auto;
+  height: 400px;
+}

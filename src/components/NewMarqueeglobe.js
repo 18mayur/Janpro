@@ -59,12 +59,12 @@ const NewMarqueeGlobe = () => {
     >
       <Globe
         ref={globeRef}
-        width={580}
-        height={570}
+        width={610}
+        height={600}
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-        backgroundColor="white"
+        backgroundColor="#fff"
         showAtmosphere={true}
-        atmosphereColor="#046cc7"
+        atmosphereColor="#046cc"
         atmosphereAltitude={0.22}
         htmlElementsData={countries}
         htmlElement={(d) => {
