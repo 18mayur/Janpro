@@ -4,7 +4,6 @@ import NewMarqueeGlobe from "@/components/NewMarqueeglobe";
 import Image from "next/image";
 import "./style.css";
 import StackCards from "./StackCards";
-import Sample from "./Sample";
 import Sample3 from "./Sample3";
 
 export default function Page() {
@@ -110,7 +109,7 @@ export default function Page() {
     
     {/* <Sample/> */}
     {/* <Sample3/> */}
-    <header className="flex items-center pt-10 px-16">
+    <header className="flex items-center pt-10 px-16 relative z-">
            <div className="logo">
           <a href="#">
             <img

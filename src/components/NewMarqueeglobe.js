@@ -62,9 +62,9 @@ const NewMarqueeGlobe = () => {
         width={610}
         height={600}
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
-        backgroundColor="#fff"
+        backgroundColor="rgba(0,0,0,0)"
         showAtmosphere={true}
-        atmosphereColor="#046cc"
+        atmosphereColor="#dce2f2"
         atmosphereAltitude={0.22}
         htmlElementsData={countries}
         htmlElement={(d) => {
