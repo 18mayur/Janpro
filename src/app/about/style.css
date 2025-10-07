@@ -76,7 +76,7 @@
   position: relative;
 }
 .btn-back-1 {
-    width: 103% !important;
+    width:100% !important;
   background: linear-gradient(
     135deg,
     rgb(1, 61, 166) -20%,

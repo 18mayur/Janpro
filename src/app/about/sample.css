@@ -2,57 +2,42 @@
   position: relative;
   width: 100vw;
   height: 100vh;
-  overflow: hidden !important;
- 
+  overflow-x: hidden !important;
 }
-
-/* .card {
-  border-radius: 12px;
-  border: 2px solid #ff0000;
-} */
-/* .cards {
+/* .full-screen .fade-overlay {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: grid;
-}
-
-.cards .card {
-  width: 300px;
-  height: 200px;
-  border-radius: 20px;
-  background: rgba(4, 108, 199, 0.251);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(4, 108, 199, 0.251);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
+  background: white;
+  z-index: 2000;
   opacity: 0;
-  transform: translateX(300px);
+  pointer-events: none;
+  transition: opacity 1s ease;
 } */
-
 .cards {
+
   position: absolute;
   top: 50%;
-  right: 5%;
+  right: 10%;
   transform: translate(-50%, -50%);
-  width: 300px; /* same width as card */
-  height: 360px; /* same height as card */
+  width: 300px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
 }
 
 .cards .card {
-  position: absolute;
-  top: 50%;
-  right: 65%;
-  transform: translate(-50%, -50%);
-  width: 200px;
-  height: 180px;
+    padding: 1.125rem 1.25rem !important;
+  position: relative;
+  width: 340px !important;
+  height: 280px !important;
   border-radius: 20px;
-  background: rgba(4, 108, 199, 0.2);
+  background-color: #f1f1f1;
+  /* background: linear-gradient(135deg,white  0%, #dce2f2 100%); */
+  box-shadow: 4px 4px 6px #65656530;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(4, 108, 199, 0.2);
-  /* box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); */
+  /* border: 1px solid rgba(4, 108, 199, 0.2); */
   opacity: 0;
+  transition: transform 0.3s ease;
 }

@@ -1,20 +1,33 @@
 "use client";
-import { useState } from "react";
-import NewMarqueeGlobe from "@/components/NewMarqueeglobe";
-import Image from "next/image";
-import "./style.css";
+import { useEffect, useState } from "react";
 import StackCards from "./StackCards";
-import Service from "./Service"
-import Sample3 from "./Sample3";
-
+import Service from "./Service";
+import './style.css';
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showService, setShowService] = useState(false);
+  const [phase, setPhase] = useState("intro"); // intro | animating | done
+
+  // After animation finished, allow scroll-based fade swapping
+  useEffect(() => {
+    if (phase !== "done") return;
+
+    const handleWheel = (e) => {
+      if (e.deltaY > 0 && !showService) {
+        setShowService(true);
+      } else if (e.deltaY < 0 && showService) {
+        setShowService(false);
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: true });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [phase, showService]);
 
   return (
- <> 
-    {/* <Sample/> */}
-    {/* <Sample3/> */}
-    <header className="flex  items-center pt-10 px-16  z-">
+    <>
+      {/* Header */}
+         <header className="flex  items-center pt-10 px-16  z-504">
            <div className="logo fixed mt-10">
           <a href="#">
             <img
@@ -25,8 +38,6 @@ export default function Page() {
             />
           </a>
         </div>
-
-        {/* Hamburger + Sidebar */}
         <div>
           <div
             className={`hamburger ${menuOpen ? "active" : ""}`}
@@ -47,10 +58,24 @@ export default function Page() {
           </div>
         </div>
       </header>
-      <StackCards/>
-      <section>
-        <Service/>
-      </section>
+
+      {/* StackCards (intro section) */}
+      <div
+        className={`absolute inset-0 transition-opacity duration-[1000ms] ${
+          showService ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      >
+        <StackCards phase={phase} setPhase={setPhase} />
+      </div>
+
+      {/* Service section */}
+      <div
+        className={`absolute inset-0 transition-opacity duration-[1000ms] ${
+          showService ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <Service />
+      </div>
     </>
   );
 }
