@@ -99,7 +99,7 @@ export default function Sample3() {
   return (
     <div
       ref={containerRef}
-      className="full-screen relative w-screen h-screen bg-[#fff] overflow-hidden"
+      className="full-screen relative w-screen h-screen  overflow-hidden"
     >
       {/* Title */}
       <h1

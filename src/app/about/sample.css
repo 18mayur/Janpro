@@ -4,7 +4,7 @@
   height: 100vh;
   overflow-x: hidden !important;
 }
-/* .full-screen .fade-overlay {
+.full-screen .fade-overlay {
   position: absolute;
   inset: 0;
   background: white;
@@ -12,7 +12,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease;
-} */
+}
 .cards {
 
   position: absolute;

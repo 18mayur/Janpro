@@ -64,7 +64,7 @@ export default function Service() {
     slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2500,
+    autoplaySpeed: 2000,
     arrows: false,
     pauseOnHover: false,
     cssEase: "ease-in-out",
@@ -85,11 +85,11 @@ export default function Service() {
         }
         .slick-track {
           display: flex !important;
-          gap: 1.5rem; /* reduces spacing between cards */
+          gap: 1.8rem; /* reduces spacing between cards */
         }
         .slick-list {
           overflow: visible !important;
-          padding: 0 40px !important; /* adds left-right spacing */
+          padding: 0 20px !important; /* adds left-right spacing */
         }
       `}</style>
  
