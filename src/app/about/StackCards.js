@@ -136,7 +136,7 @@ export default function StackCards({ phase, setPhase }) {
       {/* Fade overlay for transition */}
       <div
         ref={overlayRef}
-        className="absolute inset-0 bg-white z-[2000] pointer-events-none"
+        className="absolute inset-0  z-[2000] pointer-events-none"
       ></div>
 
       {/* Title */}

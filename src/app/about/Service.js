@@ -4,7 +4,7 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
- 
+import "./Stack.css" 
 const services = [
   {
     title: "HouseKeeping",
@@ -66,7 +66,7 @@ export default function Service() {
     autoplay: true,
     autoplaySpeed: 2500,
     arrows: false,
-    pauseOnHover: true,
+    pauseOnHover: false,
     cssEase: "ease-in-out",
     responsive: [
       { breakpoint: 1280, settings: { slidesToShow: 3 } },
@@ -93,7 +93,7 @@ export default function Service() {
         }
       `}</style>
  
-      <div className="w-full max-w-[1400px] py-16">
+      <div className="w-full overflow-hidden max-w-[1400px] py-16">
         <Slider {...settings}>
           {services.map((service, index) => (
             <div key={index}>
