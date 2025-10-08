@@ -7,6 +7,7 @@ import "./sample.css";
 export default function StackCards({ phase, setPhase }) {
   const titleRef = useRef(null);
   const redBoxRef = useRef(null);
+   const paraRef = useRef(null); 
   const cardsRef = useRef(null);
   const overlayRef = useRef(null);
 
@@ -15,6 +16,7 @@ export default function StackCards({ phase, setPhase }) {
 
   useEffect(() => {
     const title = titleRef.current;
+     const para = paraRef.current;
     const redBox = redBoxRef.current;
     const cards = cardsRef.current.querySelectorAll(".card");
     const overlay = overlayRef.current;
@@ -28,7 +30,7 @@ export default function StackCards({ phase, setPhase }) {
       { opacity: 0, y: 40, scale: 1 },
       { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }
     );
-
+    gsap.set(para, { opacity: 0, y: 10 });
     // initial positions
     gsap.set(redBox, { opacity: 0, scale: 0.8 });
     gsap.set(cards, { opacity: 0 });
@@ -51,6 +53,16 @@ export default function StackCards({ phase, setPhase }) {
         scale: 1,
         duration: 1.2,
         ease: "power2.out",
+        onComplete: () => {
+        // when scale reaches smaller size → show paragraph
+        gsap.to(para, {
+          x:180,
+          y:180,
+          opacity: 1,
+          duration: 1,
+          ease: "power2.out",
+        });
+      },
       })
       .to({}, { duration: 2 }) // pause for 2s for globe focus
       // 🟡 Cards directional fade
@@ -147,7 +159,8 @@ export default function StackCards({ phase, setPhase }) {
       >
         Welcome To Janpro
       </h1>
-      
+      <p  ref={paraRef}
+          className="text-[1.125rem] font-semibold text-[#0054d1] leading-tight">Lorem ipsum dolor sit amet consectetur.</p>
 
       {/* Globe */}
       <div
