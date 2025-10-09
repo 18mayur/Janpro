@@ -159,8 +159,8 @@ export default function StackCards({ phase, setPhase }) {
       >
         Welcome To Janpro
       </h1>
-      <p  ref={paraRef}
-          className="text-[1.125rem] font-semibold text-[#0054d1] leading-tight">Lorem ipsum dolor sit amet consectetur.</p>
+      {/* <p  ref={paraRef}
+          className="text-[1.125rem] font-semibold text-[#0054d1] leading-tight">Lorem ipsum dolor sit amet consectetur.</p> */}
 
       {/* Globe */}
       <div
