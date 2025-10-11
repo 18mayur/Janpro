@@ -4,7 +4,7 @@
   height: 100vh;
   overflow-x: hidden !important;
 }
-.full-screen .fade-overlay {
+/* .full-screen .fade-overlay {
   position: absolute;
   inset: 0;
   background: white;
@@ -12,7 +12,7 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 1s ease;
-}
+} */
 .cards {
 
   position: absolute;
@@ -28,16 +28,46 @@
 }
 
 .cards .card {
-    padding: 1.125rem 1.25rem !important;
+    padding: 1rem 1.25rem !important;
   position: relative;
   width: 340px !important;
   height: 280px !important;
   border-radius: 20px;
-  background-color: #f1f1f1;
+  background-color: #f1f1f100;
+  background: rgb(255 255 255 / 28%);
+    backdrop-filter: blur(10px);
   /* background: linear-gradient(135deg,white  0%, #dce2f2 100%); */
   box-shadow: 4px 4px 6px #65656530;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); */
   /* border: 1px solid rgba(4, 108, 199, 0.2); */
   opacity: 0;
+  transition: transform 0.3s ease;
+}
+.cards2 {
+  position: absolute;
+  top: 50%;
+  /* right: 10%; */
+  transform: translate(-190%, -50%);
+  width: 300px;
+  height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+.cards2 .card2 {
+    padding: 1rem 1.25rem !important;
+  position: relative;
+  width: 280px !important;
+  height: 140px !important;
+  border-radius: 20px;
+  background-color: #f1f1f100;
+  background: #a7bcf684;
+    backdrop-filter: blur(10px);
+  /* background: linear-gradient(135deg,white  0%, #dce2f2 100%); */
+  box-shadow: 4px 4px 6px #65656530;
+  /* backdrop-filter: blur(10px); */
+  /* border: 1px solid rgba(4, 108, 199, 0.2); */
+  opacity: 100;
   transition: transform 0.3s ease;
 }

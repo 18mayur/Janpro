@@ -7,7 +7,7 @@ import "./sample.css";
 export default function StackCards({ phase, setPhase }) {
   const titleRef = useRef(null);
   const redBoxRef = useRef(null);
-   const paraRef = useRef(null); 
+  const paraRef = useRef(null);
   const cardsRef = useRef(null);
   const overlayRef = useRef(null);
 
@@ -16,7 +16,7 @@ export default function StackCards({ phase, setPhase }) {
 
   useEffect(() => {
     const title = titleRef.current;
-     const para = paraRef.current;
+    const para = paraRef.current;
     const redBox = redBoxRef.current;
     const cards = cardsRef.current.querySelectorAll(".card");
     const overlay = overlayRef.current;
@@ -30,8 +30,8 @@ export default function StackCards({ phase, setPhase }) {
       { opacity: 0, y: 40, scale: 1 },
       { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }
     );
+
     gsap.set(para, { opacity: 0, y: 10 });
-    // initial positions
     gsap.set(redBox, { opacity: 0, scale: 0.8 });
     gsap.set(cards, { opacity: 0 });
     gsap.set(overlay, { opacity: 0 });
@@ -39,52 +39,103 @@ export default function StackCards({ phase, setPhase }) {
     // Animation timeline
     const tl = gsap.timeline({ paused: true });
 
-    // 🟢 Title goes left & scales down when scroll starts
+    // Main intro + globe show
     tl.to(title, {
-      x: -736,
-      y:-195, // moves title to the left
-      scale: 0.6, // scale down font size visually from 3.75rem → 2.25rem (approx)
+      x: 460,
+      y: -166,
+      scale: 0.6,
       duration: 1.2,
       ease: "power2.inOut",
     })
-      // 🟣 Globe fade in + hold
       .to(redBox, {
         opacity: 1,
         scale: 1,
         duration: 1.2,
         ease: "power2.out",
         onComplete: () => {
-        // when scale reaches smaller size → show paragraph
-        gsap.to(para, {
-          x:180,
-          y:180,
-          opacity: 1,
-          duration: 1,
-          ease: "power2.out",
-        });
-      },
+          gsap.to(para, {
+            x: 180,
+            y: 180,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+          });
+        },
       })
-      .to({}, { duration: 2 }) // pause for 2s for globe focus
-      // 🟡 Cards directional fade
-      .fromTo(
-        cards[0],
-        { opacity: 0, x: -40 },
-        { opacity: 1, x: 0, duration: 1, ease: "power2.out" } // left card
-      )
-      .fromTo(
-        cards[1],
-        { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 1, ease: "power2.out" },
-        "-=0.6"
-      )
-      .fromTo(
-        cards[2],
-        { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 1, ease: "power2.out" },
-        "-=0.6"
-      )
-      // overlay fade transition
-      .to(overlay, { opacity: 1, duration: 1.2, ease: "power2.inOut" }, "+=0")
+      .to({}, { duration:3}); // small pause before cards start
+
+    // ---- COUNTER + CARD SEQUENCE ----
+
+    // helper: number counter animation
+    const animateCounter = (element, endValue, duration = 1) => {
+      const obj = { val: 0 };
+      return new Promise((resolve) => {
+        gsap.to(obj, {
+          val: endValue,
+          duration,
+          ease: "power1.out",
+          onUpdate: () => {
+            element.textContent = obj.val.toFixed(0).toLocaleString();
+          },
+          onComplete: resolve,
+        });
+      });
+    };
+
+    // first card fade + count
+    tl.to({}, {
+      onComplete: () => {
+        gsap.fromTo(
+          cards[0],
+          { opacity: 0, x: -40 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power2.out",
+            onComplete: async () => {
+              const num1 = cards[0].querySelector("h3");
+              await animateCounter(num1, 11, 1.5);
+
+              // second card
+              gsap.fromTo(
+                cards[1],
+                { opacity: 0, x: 40 },
+                {
+                  opacity: 1,
+                  x: 0,
+                  duration: 1,
+                  ease: "power2.out",
+                  onComplete: async () => {
+                    const num2 = cards[1].querySelector("h3");
+                    await animateCounter(num2, 35000, 2);
+
+                    // third card
+                    gsap.fromTo(
+                      cards[2],
+                      { opacity: 0, x: 40 },
+                      {
+                        opacity: 1,
+                        x: 0,
+                        duration: 1,
+                        ease: "power2.out",
+                        onComplete: async () => {
+                          const num3 = cards[2].querySelector("h3");
+                          await animateCounter(num3, 96, 1.5);
+                        },
+                      }
+                    );
+                  },
+                }
+              );
+            },
+          }
+        );
+      },
+    });
+
+    // overlay fade (after all done)
+    tl.to(overlay, { opacity: 1, duration: 1.2, ease: "power2.inOut" }, "+=0")
       .to(overlay, {
         opacity: 0,
         duration: 1.2,
@@ -96,7 +147,7 @@ export default function StackCards({ phase, setPhase }) {
         setPhase && setPhase("done");
       });
 
-    // Trigger animation when user scrolls slightly
+    // scroll / touch trigger
     const triggerIntro = () => {
       if (triggeredRef.current) return;
       triggeredRef.current = true;
@@ -157,10 +208,8 @@ export default function StackCards({ phase, setPhase }) {
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
         text-[3.75rem] font-bold text-[#003da6] z-[999] text-center"
       >
-        Welcome To Janpro
+        Welcome To Janpro to moved Forward
       </h1>
-      {/* <p  ref={paraRef}
-          className="text-[1.125rem] font-semibold text-[#0054d1] leading-tight">Lorem ipsum dolor sit amet consectetur.</p> */}
 
       {/* Globe */}
       <div
@@ -175,9 +224,10 @@ export default function StackCards({ phase, setPhase }) {
       <div ref={cardsRef} className="cards absolute top-1/2 left-1/2 z-[20]">
         <div
           className="card absolute left-card flex flex-col justify-center items-center text-center"
-          style={{ left: "-470px", top: "306px" }}
-        >
-          <h3 className="text-[2.5rem] text-[#78bf21] font-bold">11+</h3>
+          style={{ left: "-480px", top: "10px" }}>
+          <div className="flex gap-1 justify-center items-center text-[2.5rem] text-[#78bf21] font-bold">
+          <h3 className=""></h3><span className="">+</span>
+          </div>
           <span className="text-[1.5rem] text-[#003da6] font-bold">
             Countries Served
           </span>
@@ -185,9 +235,11 @@ export default function StackCards({ phase, setPhase }) {
 
         <div
           className="card absolute right-card flex flex-col justify-center items-center text-center"
-          style={{ left: "440px", top: "-128px" }}
+          style={{ left: "-480px", top: "158px" }}
         >
-          <h3 className="text-[2.5rem] text-[#78bf21] font-bold">35000+</h3>
+          <div className="flex gap-1 justify-center items-center text-[2.5rem] text-[#78bf21] font-bold">
+          <h3 className=""></h3><span className="">+</span>
+          </div>
           <span className="text-[1.35rem] text-[#003da6] font-bold">
             Customers Worldwide
           </span>
@@ -195,9 +247,10 @@ export default function StackCards({ phase, setPhase }) {
 
         <div
           className="card absolute right-card flex flex-col justify-center items-center text-center"
-          style={{ left: "440px", top: "10px" }}
-        >
-          <h3 className="text-[2.5rem] text-[#78bf21] font-bold">96%</h3>
+          style={{ left: "440px", top: "10px" }}>
+          <div className="flex gap-1 justify-center items-center text-[2.5rem] text-[#78bf21] font-bold">
+          <h3 className="">1</h3><span className="">%</span>
+          </div>
           <span className="text-[1.35rem] text-[#003da6] font-bold">
             Client Retention
           </span>

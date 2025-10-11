@@ -1,14 +1,29 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap'); */
+@font-face {
+  font-family: "Antarctica";
+  src: url("/fonts/antarctica/AntaTrial-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 body{
      overflow-x: hidden;
       width: 100%;
-      font-family: "Barlow Condensed", sans-serif;
-     background: linear-gradient(to top,white  0%, #dce2f2 100%) !important;
+      height: 100vh;
+      font-family: "Antarctica", sans-serif;
+      /* font-family: "Barlow Condensed", sans-serif; */
+      background-color: white !important;
+      
+   /* background-image: url("/images/bg-img4.png"); */
+    /* background-size: cover; */
+    /* background-position: top 10% center; */
+     /* background: linear-gradient(to top,white  0%, #cbd5ee 100%) !important; */
 }
 header {
   position: fixed !important;
-  top: 0;
+  top: 0; 
   left: 0;
   width: 100%;
   z-index: 2000;
