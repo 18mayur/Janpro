@@ -148,8 +148,23 @@ export default function Page() {
     const globeWrap = globeWrapperRef.current;
     const cardsContainer = cardsRef.current;
     const overlay = overlayRef.current;
-
     const cards = cardsContainer.querySelectorAll(".card");
+
+    // helper: number counter animation
+    const animateCounter = (element, endValue, duration = 1) => {
+      const obj = { val: 0 };
+      return new Promise((resolve) => {
+        gsap.to(obj, {
+          val: endValue,
+          duration,
+          ease: "power1.out",
+          onUpdate: () => {
+            element.textContent = obj.val.toFixed(0).toLocaleString();
+          },
+          onComplete: resolve,
+        });
+      });
+    };
 
     // Initial states
     gsap.set(titleEl, { opacity: 1, scale: 1, y: 0 });
@@ -161,7 +176,7 @@ export default function Page() {
     cards.forEach((c) => gsap.set(c, { opacity: 0, x: 0, y: 30 }));
     gsap.set(overlay, { opacity: 0 });
 
-    const introScrollDistance = 4200; // long cinematic scroll
+    const introScrollDistance = 2000; // reduced scroll distance
     const introTL = gsap.timeline({
       defaults: { ease: "power2.out" },
       scrollTrigger: {
@@ -181,15 +196,26 @@ export default function Page() {
       0
     );
     introTL.to(globeWrap, { opacity: 1, scale: 1, duration: 0.8 }, 1.2);
-    introTL.to({}, { duration: 3 }); // hold globe
+    introTL.to({}, { duration: 1.5 }); // hold globe
 
-    // Cards appear one by one
-    introTL.to(cards[0], { opacity: 1, x: -40, y: 0, duration: 1 }, "+=0");
-    introTL.to({}, { duration: 1 });
-    introTL.to(cards[1], { opacity: 1, x: -20, y: 10, duration: 1 }, "+=0");
-    introTL.to({}, { duration: 1 });
-    introTL.to(cards[2], { opacity: 1, x: 40, y: -6, duration: 1 }, "+=0");
-    introTL.to({}, { duration: 1 });
+    // Intro cards fade-in + counters
+    const introCardValues = [11, 35000, 96]; // update to match each card
+    cards.forEach((card, i) => {
+      introTL.to(
+        card,
+        {
+          opacity: 1,
+          y: 0,
+          x: card.style.left.includes("-") ? -40 : 40,
+          duration: 1,
+          onStart: async () => {
+            const numEl = card.querySelector("h3");
+            if (numEl) await animateCounter(numEl, introCardValues[i], 1.5);
+          },
+        },
+        "+=0.5"
+      );
+    });
 
     // Globe zoom and fade-out
     introTL.to(globeWrap, { scale: 1.35, duration: 0.8 }, "+=0");
@@ -197,73 +223,61 @@ export default function Page() {
     introTL.to(introEl, { opacity: 0, duration: 0.6 }, "-=0.2");
 
     // ---------------- INDIA STORY SECTION ----------------
-    // INDIA STORY SECTION ANIMATION
-    gsap.registerPlugin(ScrollTrigger);
-
     const indiaEl = indiaRef.current;
     const indiaTitleEl = indiaTitleRef.current;
     const indiaMapEl = indiaMapRef.current;
     const indiaCardsContainer = indiaCardsRef.current;
     if (indiaEl && indiaTitleEl && indiaMapEl && indiaCardsContainer) {
-      // select cards
       const indiaCards = indiaCardsContainer.querySelectorAll(".india-card");
 
-      // reset starting state (prevent bouncing)
+      // reset starting state
       gsap.set(indiaTitleEl, {
         opacity: 0,
         y: 40,
         x: 0,
         top: "50%",
         left: "50%",
-        right: "auto",
         transform: "translate(-50%,-50%)",
       });
       gsap.set(indiaMapEl, { opacity: 0, scale: 0.98 });
       indiaCards.forEach((c) => gsap.set(c, { opacity: 0, y: 30 }));
 
-      // single pinned scrubbed timeline for India section
       const indiaTL = gsap.timeline({
         scrollTrigger: {
           trigger: indiaEl,
           start: "top top",
-          end: "+=1400", // long enough for title hold + move + map + cards
+          end: "+=1400",
           scrub: 0.8,
           pin: true,
           anticipatePin: 0.5,
-          // markers: true,
         },
       });
 
-      // 1) Fade title in at center (as globe fades out)
+      // Fade title in center
       indiaTL.to(indiaTitleEl, {
         opacity: 1,
         y: 0,
         duration: 0.8,
         ease: "power2.out",
       });
-
-      // 2) Hold the title centered for a short scroll distance (approx 1s worth)
       indiaTL.to({}, { duration: 0.9 });
 
-      // 3) Move title smoothly to top-right (below header) — use px calc to avoid transform stacking
-      // compute target in runtime for precision
+      // Move title to top-right
       const rect = indiaTitleEl.getBoundingClientRect();
       const vw = window.innerWidth;
-      const targetTopPx = 108; // 24px from top
-      const targetRightPx = 140; // 24px from right
+      const targetTopPx = 108;
+      const targetRightPx = 140;
       const targetCenterX = vw - targetRightPx - rect.width / 2;
       const currentCenterX = rect.left + rect.width / 2;
       const deltaX = targetCenterX - currentCenterX;
-      // animate using translate to avoid messing with 'left' CSS
       indiaTL.to(indiaTitleEl, {
         duration: 1.2,
         ease: "power2.inOut",
         x: deltaX,
-        y: -(window.innerHeight / 2 - targetTopPx - rect.height / 2), // move up to near top
+        y: -(window.innerHeight / 2 - targetTopPx - rect.height / 2),
         scale: 0.95,
       });
 
-      // 4) small pause, then map fades in (center)
       indiaTL.to({}, { duration: 0.25 });
       indiaTL.to(
         indiaMapEl,
@@ -271,26 +285,41 @@ export default function Page() {
         "+=0"
       );
 
-      // 5) Cards appear staggered from below (one by one)
-      indiaTL.to(
-        indiaCards,
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.8,
-          duration: 0.9,
-          ease: "power2.out",
-        },
-        "+=0.1"
-      );
+      // India cards fade in + counters
+      const indiaCardValues = [450, 6500];
+      indiaCards.forEach((card, i) => {
+        indiaTL.to(
+          card,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            onStart: async () => {
+              const numEl = card.querySelector("h3");
+              if (numEl) await animateCounter(numEl, indiaCardValues[i], 1.5);
+            },
+          },
+          "+=0.3"
+        );
+      });
+       indiaTL.to(
+    indiaEl,
+    {
+      y: -300, // move up 100px while fading
+      opacity: 0,
+      duration: 1.2,
+      ease: "power2.out",
+    },
+    "+=0.5"
+  );
     }
+
     // ---------------- SERVICE SECTION ----------------
     const svcEl = serviceRef.current;
     const svcTitle = serviceTitleRef.current;
     const svcWrapper = serviceSliderRef.current;
 
     if (svcEl && svcTitle && svcWrapper) {
-      // Reset starting state
       gsap.set(svcTitle, {
         opacity: 0,
         position: "absolute",
@@ -310,30 +339,22 @@ export default function Page() {
           scrub: 0.8,
           pin: true,
           anticipatePin: 0.5,
-          // markers: true,
         },
       });
 
-      // 1️⃣ Fade out previous India section
       serviceTL.to(indiaRef.current, {
         opacity: 0,
         duration: 0.6,
         ease: "power2.out",
       });
-
-      // 2️⃣ Fade in title from center
       serviceTL.to(svcTitle, {
         opacity: 1,
         yPercent: -50,
-        duration: 1.2,
+        duration: 0.6,
         ease: "power2.out",
       });
-
-      // 3️⃣ Hold title in center for a moment
       serviceTL.to({}, { duration: 0.8 });
-
-      // 4️⃣ Move title straight to TOP CENTER (not right)
-      const headerHeight = 96; // adjust if your header is taller/shorter
+      const headerHeight = 96;
       serviceTL.to(svcTitle, {
         top: `${headerHeight + 16}px`,
         left: "50%",
@@ -342,22 +363,12 @@ export default function Page() {
         duration: 1.2,
         ease: "power2.inOut",
       });
-
-      // 5️⃣ Hold briefly
       serviceTL.to({}, { duration: 0.25 });
-
-      // 6️⃣ Fade in slider smoothly
       serviceTL.to(
         svcWrapper,
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: "power2.out",
-        },
+        { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" },
         "+=0.1"
       );
-
       ScrollTrigger.refresh();
     }
 
@@ -446,7 +457,7 @@ export default function Page() {
             style={{ left: "-480px", top: "10px" }}
           >
             <div className="flex gap-1 justify-center items-center text-[2.5rem] text-[#78bf21] font-bold">
-              <h3>11</h3>
+              <h3>0</h3>
               <span>+</span>
             </div>
             <span className="text-[1.5rem] text-[#003da6] font-bold">
@@ -458,7 +469,7 @@ export default function Page() {
             style={{ left: "-480px", top: "158px" }}
           >
             <div className="flex gap-1 justify-center items-center text-[2.5rem] text-[#78bf21] font-bold">
-              <h3>35000</h3>
+              <h3>0</h3>
               <span>+</span>
             </div>
             <span className="text-[1.35rem] text-[#003da6] font-bold">
@@ -470,7 +481,7 @@ export default function Page() {
             style={{ left: "440px", top: "10px" }}
           >
             <div className="flex gap-1 justify-center items-center text-[2.5rem] text-[#78bf21] font-bold">
-              <h3>65</h3>
+              <h3>0</h3>
               <span>%</span>
             </div>
             <span className="text-[1.35rem] text-[#003da6] font-bold">
@@ -530,7 +541,7 @@ export default function Page() {
             style={{ left: "-480px", top: "-16px" }}
           >
             <div className="flex gap-1 justify-center items-center text-[2.5rem] text-[#78bf21] font-bold">
-              <h3>450</h3>
+              <h3>0</h3>
               <span>+</span>
             </div>
             <span className="text-[1.5rem] text-[#003da6] font-bold">
@@ -543,7 +554,7 @@ export default function Page() {
             style={{ left: "-480px", top: "100px" }}
           >
             <div className="flex gap-1 justify-center items-center text-[2.5rem] text-[#78bf21] font-bold">
-              <h3>6500</h3>
+              <h3>0</h3>
               <span>+</span>
             </div>
             <span className="text-[1.5rem] text-[#003da6] font-bold">
