@@ -75,11 +75,7 @@ export default function Service() {
   };
 
   return (
-    <>
-    <section className="flex flex-col h-[100vh] justify-center gap-2">
-      <div className="flex w-full justify-center items-center">
-        <h2 className="text-[2.125rem] ">Service Section</h2>
-        </div> 
+    <> 
     <div className=" flex justify-center items-center ">
       <style>{`
         .slick-slide {
@@ -144,7 +140,6 @@ export default function Service() {
         </Slider>
       </div>
     </div>
-    </section>
     </>
   );
 }
