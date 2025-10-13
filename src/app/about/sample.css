@@ -4,15 +4,6 @@
   height: 100vh;
   overflow-x: hidden !important;
 }
-/* .full-screen .fade-overlay {
-  position: absolute;
-  inset: 0;
-  background: white;
-  z-index: 2000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1s ease;
-} */
 .cards {
 
   position: absolute;
